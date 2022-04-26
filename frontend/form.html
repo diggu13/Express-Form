@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="form.css">
+    <title>Document</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200&display=swap');
+body {
+    align-items: center;
+    background-image: linear-gradient( 178.4deg,  rgba(77,88,105,1) 4.8%, rgba(39,43,57,1) 86.7% );
+    display: flex;
+    justify-content: center;
+    font-family: 'Nunito', sans-serif;
+  }
+  
+  .form {
+    background-color: #15172b;
+    
+     
+    border-radius: 20px;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 20px;
+    width: 600px;
+  }
+  .form p{
+      color: white;
+      margin: 0;
+      font-size: 25px;
+  }
+  
+  .title {
+    color: #eee;
+    font-size: 36px;
+    font-weight: 600;
+    margin-top: 30px;
+  }
+  
+  .subtitle {
+    color: #eee;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+  
+  .input-container {
+    height: 50px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .ic1 {
+    margin-top: 40px;
+  }
+  
+  .ic2 {
+    margin-top: 30px;
+  }
+  
+  .input {
+    background-color: #303245;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 20px 0;
+    width: 100%;
+  }
+  
+  .cut {
+    background-color: #15172b;
+    border-radius: 10px;
+    height: 20px;
+    left: 20px;
+    position: absolute;
+    top: -20px;
+    transform: translateY(0);
+    transition: transform 200ms;
+    width: 76px;
+  }
+  
+  .cut-short {
+    width: 50px;
+  }
+  
+  .input:focus ~ .cut,
+  .input:not(:placeholder-shown) ~ .cut {
+    transform: translateY(8px);
+  }
+  
+  .placeholder {
+    color: #65657b;
+    left: 20px;
+    line-height: 14px;
+    pointer-events: none;
+    position: absolute;
+    transform-origin: 0 50%;
+    transition: transform 200ms, color 200ms;
+    top: 20px;
+  }
+  
+  .input:focus ~ .placeholder,
+  .input:not(:placeholder-shown) ~ .placeholder {
+    transform: translateY(-30px) translateX(10px) scale(0.75);
+  }
+  
+  .input:not(:placeholder-shown) ~ .placeholder {
+    color: #808097;
+  }
+  
+  .input:focus ~ .placeholder {
+    color: #dc2f55;
+  }
+
+  .gender-age-container{
+      color: white;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-around;
+  }
+  .gender-container p{
+    margin-bottom: 2px;
+    font-weight: bold;
+  }
+  .gender-container{
+    background-color: #303245;
+    margin: 15px 0;
+    padding: 10px 15px;
+    border-radius: 10px;
+  }
+.form-group { 
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 10px 5px;
+    justify-content:center ;
+}
+#age{
+    background-color: #303245;
+    border: none;
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+}
+.form-control{
+    margin: 5px;
+    padding: 8px;
+    background-color: #303245;
+    border-radius: 12px;
+    box-sizing: border-box;
+    color: #eee;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 10px;
+    border: none;
+}
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.inputfile + label {
+    font-size: 17px;
+    border-radius: 10px;
+    padding: 5px;
+    font-weight: 700;
+    color: white;
+    background-color: #303245;
+    display: inline-block;
+}
+
+
+.inputfile + label {
+	 cursor: pointer; 
+}
+.countries{
+    background-color:#303245 ;
+    border: none;
+    color: #808097;
+    font-size: 20px;
+    border-radius: 10px;
+    padding: 8px;
+    width: 240px;
+    margin-top: 5px;
+}
+.submitButton{
+    width: 100%;
+    padding: 10px;
+    border-radius: 12px;
+    background-color: rgb(72, 176, 217);
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+    color: white;
+}  
+.submitButton:hover{
+    background-color: rgb(111, 186, 216);
+}
+
+
+/* media queries */
+@media screen and (max-width: 620px) {
+    .form{
+        width: 90%;
+        margin: auto;
+    }
+  }
+   
+    </style>
+</head>
+<body>
+<form action="http://localhost:3000/signUp" enctype="multipart/form-data" method="POST" id="formSubmit">
+  <div class="form">
+    <p>Let's create your account</p>
+    <div class="input-container ic1">
+      <input name="firstName" id="firstname" class="input" type="text" placeholder=" " />
+      <div class="cut"></div>
+      <label for="firstname" class="placeholder">First name</label>
+    </div>
+    <div class="input-container ic2">
+      <input name="lastName" id="lastname"  class="input" type="text" placeholder=" " />
+      <div class="cut"></div>
+      <label for="lastname" class="placeholder">Last name</label>
+    </div>
+    <div class="input-container ic2">
+      <input name="email" id="email" class="input" type="text" placeholder=" " />
+      <div class="cut cut-short"></div>
+      <p class="email_p"></p>
+      <label for="email" class="placeholder">Email</>
+    </div>
+    <div class="gender-age-container">
+      <div class="gender-container">
+        <p>Gender</p>
+        <input class="radio" type="radio" name="gender" value="male"> Male<br>
+        <input class="radio" type="radio" name="gender" value="female"> Female<br>
+        <input class="radio" type="radio" name="gender" value="other"> Other
+      </div>
+      <div>
+        <label>Age</label>
+        <input name="age" id="age" type="number" min="1" max="100">
+      </div>
+      <div>
+        <input type="file" name="image" id="file" class="inputfile" />
+        <label for="file">Upload image</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="street" 
+            class="form-control" 
+            id="autocomplete hnoSector" 
+            placeholder="Hno / sector" name="street">
+      <input type="city" 
+            class="form-control" 
+            id="inputCity city" 
+            placeholder="City" name="city">
+      <input type="state" 
+            class="form-control" 
+            id="inputState state" 
+            placeholder="State" name="state">
+      <input type="zip" 
+            class="form-control" 
+            id="inputZip zipCode" 
+            placeholder="Zip" name="zipCode">
+      <select class="countries" id="countries" name="country">
+        <option>select country</option>
+      </select>
+    </div>
+    <button class="submitButton" type="submit">Register</button>
+  </div>
+</form>
+<script>
+  const submit = document.querySelector('.submitButton')
+// const countries = document.getElementById('countries');
+// const emailCheck = document.querySelector('.cut')
+// fetch('http://localhost:3000/countries')
+// .then(res=> res.json())
+// .then(data=>{
+//     countriesOptions(data)
+// })
+
+// function countriesOptions(item){
+//     item.map((data)=>{
+//         countries.innerHTML += `
+//             <option>(${data.code}) ${data.name}</option>
+//         `
+//     })
+    
+// }
+
+         
+</script>
+</body>
+</html>
