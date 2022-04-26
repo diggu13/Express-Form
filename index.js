@@ -2,19 +2,16 @@ const express = require('express');
 const app = express();
 const multer  = require('multer')
 const path = require('path')
+var cors = require('cors')
 const upload = multer({ dest: './frontend/uploads/' })
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb+srv://ExpressForm:ExpressForm@cluster0.ri0ry.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
-// app.use(express.static('public'))
-// app.get('/', (req, res)=>{
-//     res.set({'Access-Control-Allow-Origin':'*'});
-//     return res.redirect('form.html');
-// })
+app.use(cors())
 
 app.get('/form',function(req,res) {
     res.sendFile(path.join(__dirname,'/frontend/form.html'));
   });
-app.post('/signUp', upload.single('image'),(req,res)=>{
+app.post('/', upload.single('image'),(req,res)=>{
    const address = {
        street : req.body.street,
        city : req.body.city,
@@ -28,10 +25,10 @@ app.post('/signUp', upload.single('image'),(req,res)=>{
        var email = req.body.email;
        dbo.collection('users').find({"email" : email}).toArray((err,response)=>{
            if(response[0]){
-                return res.json({
-                    status : 200,
-                    message : "enter unique"
-                })
+               const message = {
+                   msg : "email already exists"
+               }
+               res.send(message)
            }else{
             dbo.collection('address').insertOne(address,function(err,result){
                 if(err) throw err;

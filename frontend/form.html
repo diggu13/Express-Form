@@ -194,6 +194,7 @@ body {
     width: 240px;
     margin-top: 5px;
 }
+
 .submitButton{
     width: 100%;
     padding: 10px;
@@ -220,7 +221,7 @@ body {
     </style>
 </head>
 <body>
-<form action="http://localhost:3000/signUp" enctype="multipart/form-data" method="POST" id="formSubmit">
+<form id="formSubmit">
   <div class="form">
     <p>Let's create your account</p>
     <div class="input-container ic1">
@@ -236,15 +237,15 @@ body {
     <div class="input-container ic2">
       <input name="email" id="email" class="input" type="text" placeholder=" " />
       <div class="cut cut-short"></div>
-      <p class="email_p"></p>
       <label for="email" class="placeholder">Email</>
     </div>
+    <p class="emailChck"></p>
     <div class="gender-age-container">
       <div class="gender-container">
         <p>Gender</p>
-        <input class="radio" type="radio" name="gender" value="male"> Male<br>
-        <input class="radio" type="radio" name="gender" value="female"> Female<br>
-        <input class="radio" type="radio" name="gender" value="other"> Other
+        <input id="gender" class="radio" type="radio" value="Male" name="gender"> Male<br>
+        <input id="gender" class="radio" type="radio" value="Female" name="gender"> Female<br>
+        <input id="gender" class="radio" type="radio" value="Others" name="gender"> Other
       </div>
       <div>
         <label>Age</label>
@@ -256,23 +257,23 @@ body {
       </div>
     </div>
     <div class="form-group">
-      <input type="street" 
+      <input type="text" 
             class="form-control" 
-            id="autocomplete hnoSector" 
-            placeholder="Hno / sector" name="street">
-      <input type="city" 
+            id="street" 
+            placeholder="Hno / sector" name="street"/>
+      <input type="text" 
             class="form-control" 
-            id="inputCity city" 
-            placeholder="City" name="city">
-      <input type="state" 
+            id="city" 
+            placeholder="City" name="city"/>
+      <input type="text" 
             class="form-control" 
-            id="inputState state" 
-            placeholder="State" name="state">
-      <input type="zip" 
+            id="state" 
+            placeholder="State" name="state"/>
+      <input type="number" 
             class="form-control" 
-            id="inputZip zipCode" 
-            placeholder="Zip" name="zipCode">
-      <select class="countries" id="countries" name="country">
+            id="zipCode" 
+            placeholder="Zip" name="zipCode" />
+      <select class="countries"  id="countriess" name="country" >
         <option>select country</option>
       </select>
     </div>
@@ -280,25 +281,63 @@ body {
   </div>
 </form>
 <script>
-  const submit = document.querySelector('.submitButton')
-// const countries = document.getElementById('countries');
-// const emailCheck = document.querySelector('.cut')
-// fetch('http://localhost:3000/countries')
-// .then(res=> res.json())
-// .then(data=>{
-//     countriesOptions(data)
-// })
+const submit = document.querySelector('.submitButton')
+const firstName = document.getElementById('firstname');
+const lastName = document.getElementById('lastname');
+const email = document.getElementById('email');
+const gender = document.getElementById('gender')
+const age = document.getElementById('age');
+const file = document.getElementById('file');
+const streetData = document.getElementById('street')
+const hnoSec = document.getElementById('hnosector');
+const city = document.getElementById('city');
+const state = document.getElementById('state');
+const zipCode = document.getElementById('zipCode');
+const country = document.getElementById('countriess');
+const emailChck = document.querySelector('.emailChck')
 
-// function countriesOptions(item){
-//     item.map((data)=>{
-//         countries.innerHTML += `
-//             <option>(${data.code}) ${data.name}</option>
-//         `
-//     })
-    
-// }
+fetch('http://localhost:3000/countries')
+.then((res)=> res.json())
+.then((data)=>{
+  option(data)
+})
 
-         
+function option(item){
+  item.map((data)=>{
+    country.innerHTML += `
+      <option>${data.name} ${data.code}</option>
+    `
+  })
+}
+
+submit.addEventListener('click',async function(e){
+  e.preventDefault();
+  let fd = new FormData();
+  fd.append('image',file.files[0])
+  fd.append('firstname',firstName.value)
+  fd.append('email',email.value )
+  fd.append('gender',gender.value )
+  fd.append('age',age.value )
+  fd.append('street',streetData.value )
+  fd.append('city',city.value )
+  fd.append('zipCode',zipCode.value )
+  fd.append('state',state.value )
+  fd.append('country',country.value )
+  let json = await fd;
+            let url = "http://localhost:3000/";
+            let h = new Headers();
+            let req = new Request(url,{
+                header: h,
+                body : json,
+                method: 'POST'
+            })
+            fetch(req)
+            .then((res)=> res.json())
+            .then((data)=>{
+              alert(`${data.msg}`)
+            })
+.catch(console.warn)
+}) 
 </script>
 </body>
 </html>
