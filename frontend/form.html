@@ -315,12 +315,13 @@ submit.addEventListener('click',async function(e){
   let fd = new FormData();
   fd.append('image',file.files[0])
   fd.append('firstname',firstName.value)
+  fd.append('lastname',lastName.value)
   fd.append('email',email.value )
   fd.append('gender',gender.value )
   fd.append('age',age.value )
   fd.append('street',streetData.value )
   fd.append('city',city.value )
-  fd.append('zipCode',zipCode.value )
+  fd.append('zipcode',zipCode.value )
   fd.append('state',state.value )
   fd.append('country',country.value )
   let json = await fd;
@@ -334,7 +335,11 @@ submit.addEventListener('click',async function(e){
             fetch(req)
             .then((res)=> res.json())
             .then((data)=>{
-              alert(`${data.msg}`)
+              if(data.msg === "email already exists"){
+               alert(`${data.msg}`)
+              }else{
+                alert("form submitted succesfully")
+              }
             })
 .catch(console.warn)
 }) 

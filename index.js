@@ -15,8 +15,8 @@ app.post('/', upload.single('image'),(req,res)=>{
    const address = {
        street : req.body.street,
        city : req.body.city,
-       zipCode : req.body.zipCode,
-       state : req.body.state,
+       zipCode : req.body.zipcode,
+       state : req.body.state, 
        country : req.body.country
    }
    MongoClient.connect(url,function(err,db){
@@ -30,11 +30,15 @@ app.post('/', upload.single('image'),(req,res)=>{
                }
                res.send(message)
            }else{
+            const message = {
+                msg : "data inserted successfully"
+            }
+            res.send(message)
             dbo.collection('address').insertOne(address,function(err,result){
                 if(err) throw err;
                 const userData = {
-                 name : req.body.name,
-                 lastName : req.body.lastName,
+                 firstName : req.body.firstname,
+                 lastName : req.body.lastname,
                  email : req.body.email,
                  age : req.body.age,
                  gender : req.body.gender,
@@ -43,7 +47,6 @@ app.post('/', upload.single('image'),(req,res)=>{
              }
              dbo.collection('users').insertOne(userData,function(err,result){
                  if(err) throw err;
-                 console.log(result)
              })
             })
            }
