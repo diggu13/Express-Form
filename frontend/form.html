@@ -137,11 +137,11 @@ body {
     border-radius: 10px;
   }
 .form-group { 
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    margin: 10px 5px;
-    justify-content:center ;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 10px 5px;
+  justify-content:center ;
 }
 #age{
     background-color: #303245;
@@ -172,13 +172,13 @@ body {
 	z-index: -1;
 }
 .inputfile + label {
-    font-size: 17px;
-    border-radius: 10px;
-    padding: 5px;
-    font-weight: 700;
-    color: white;
-    background-color: #303245;
-    display: inline-block;
+  font-size: 17px;
+  border-radius: 10px;
+  padding: 5px;
+  font-weight: 700;
+  color: white;
+  background-color: #303245;
+  display: inline-block;
 }
 
 
@@ -195,16 +195,50 @@ body {
     width: 240px;
     margin-top: 5px;
 }
-
+.more-address {
+  text-align: center;
+  margin: 2%;
+  
+}
+.add-address{
+  background-color: #65657b;
+  color: white;
+  border-radius: 6px;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 5px;
+  cursor: pointer;
+}
+.new-address{
+ position: relative;
+}
+.addressFormGroup{
+  border: 2px solid rgb(149, 141, 141);
+  border-radius: 10px;
+  padding: 1.5em 0;
+}
+.exit-icon{
+  color: white;
+  padding: 1px;
+  position: absolute;
+  top: 4px;
+  right: 10px;
+  cursor: pointer;
+  transition: transform .2s;
+}
+.exit-icon:hover {
+  transform: scale(1.3); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
 .submitButton{
-    width: 100%;
-    padding: 10px;
-    border-radius: 12px;
-    background-color: rgb(72, 176, 217);
-    border: none;
-    font-size: 25px;
-    cursor: pointer;
-    color: white;
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  background-color: rgb(72, 176, 217);
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+  color: white;
 }  
 .submitButton:hover{
     background-color: rgb(111, 186, 216);
@@ -258,44 +292,50 @@ body {
       </div>
     </div>
     <div class="form-group">
-      <input type="text" 
+      <input type="text"
             class="form-control" 
             id="street" 
             placeholder="Hno / sector" name="street"/>
-      <input type="text" 
+      <input type="text"
             class="form-control" 
             id="city" 
             placeholder="City" name="city"/>
       <input type="text" 
             class="form-control" 
-            id="state" 
+            id="state"
             placeholder="State" name="state"/>
       <input type="number" 
             class="form-control" 
-            id="zipCode" 
+            id="zipCode"
             placeholder="Zip" name="zipCode" />
       <select class="countries"  id="countriess" name="country" >
         <option>select country</option>
       </select>
     </div>
+    <div class="more-address">
+      <button class="add-address">Add more address</button>
+     </div>
     <button class="submitButton" type="submit">Register</button>
   </div>
 </form>
 <script>
-const submit = document.querySelector('.submitButton')
-const firstName = document.getElementById('firstname');
-const lastName = document.getElementById('lastname');
-const email = document.getElementById('email');
-const gender = document.getElementById('gender')
-const age = document.getElementById('age');
-const file = document.getElementById('file');
-const streetData = document.getElementById('street')
-const hnoSec = document.getElementById('hnosector');
-const city = document.getElementById('city');
-const state = document.getElementById('state');
-const zipCode = document.getElementById('zipCode');
-const country = document.getElementById('countriess');
-const emailChck = document.querySelector('.emailChck')
+const submit = document.querySelector('.submitButton'),
+firstName = document.getElementById('firstname'),
+lastName = document.getElementById('lastname'),
+email = document.getElementById('email'),
+gender = document.getElementById('gender'),
+age = document.getElementById('age'),
+file = document.getElementById('file'),
+streetData = document.getElementById('street'),
+hnoSec = document.getElementById('hnosector'),
+city = document.getElementById('city'),
+state = document.getElementById('state'),
+zipCode = document.getElementById('zipCode'),
+country = document.getElementById('countriess'),
+emailChck = document.querySelector('.emailChck'),
+addresBlock = document.querySelector('.more-address'),
+moreAdddresBtn = document.querySelector('.add-address');
+
 
 fetch('http://localhost:3000/countries')
 .then((res)=> res.json())
@@ -304,15 +344,68 @@ fetch('http://localhost:3000/countries')
 })
 
 function option(item){
+  let a;
   item.map((data)=>{
-    country.innerHTML += `
-      <option>${data.name} ${data.code}</option>
-    `
-  })
+  country.innerHTML += `
+    <option>${data.name} ${data.code}</option>
+  `
+  const dataOfNewAddress = `<option>${data.name} ${data.code}</option>` 
+  a += dataOfNewAddress;
+})
+window.onload= moreAdddresBtn.addEventListener('click',function(e){
+  e.preventDefault();
+  let element = document.createElement('div');
+  element.className = 'new-address';
+  element.innerHTML = `
+  <div class="form-group addressFormGroup">
+      <input type="text" 
+            class="form-control" 
+            id="streetTwo" 
+            placeholder="Hno / sector" name="street2"/>
+      <input type="text" 
+            class="form-control" 
+            id="cityTwo" 
+            placeholder="City" name="city2"/>
+      <input type="text" 
+            class="form-control" 
+            id="stateTwo" 
+            placeholder="State" name="state2"/>
+      <input type="number" 
+            class="form-control" 
+            id="zipCodeTwo" 
+            placeholder="Zip" name="zipCode2" />
+      <select class="countries moreAddress"  id="countriessTwo" name="country2" >
+        <option>select country</option>
+        ${a}
+      </select>
+    </div>
+  `
+  const x = document.createElement('a');
+  x.className = "exit-icon"
+  x.innerHTML = '<i class="remove fa-solid fa-circle-xmark"></i>'
+  element.appendChild(x)
+  addresBlock.appendChild(element);
+}) 
 }
 
-submit.addEventListener('click',async function(e){
-  e.preventDefault();
+document.addEventListener('click',function(e){
+  if(e.target.parentElement.classList.contains('exit-icon')){
+    return e.target.parentElement.parentElement.remove();
+  }else if(e.target.classList.contains('submitButton')){
+    
+  }
+})
+
+
+
+document.addEventListener('click',async function(e){
+  const streetTwo = document.getElementById('streetTwo'),
+        stateTwo = document.getElementById('stateTwo'),
+         cityTwo = document.getElementById('cityTwo'),
+         countryTwo = document.getElementById('countriessTwo'),
+         zipCodeTWo = document.getElementById('zipCodeTwo')
+  if(e.target.classList.contains('submitButton')){
+    e.preventDefault();
   let fd = new FormData();
   fd.append('image',file.files[0])
   fd.append('firstname',firstName.value)
@@ -325,24 +418,34 @@ submit.addEventListener('click',async function(e){
   fd.append('zipcode',zipCode.value )
   fd.append('state',state.value )
   fd.append('country',country.value )
+  fd.append('streetTwo',streetTwo.value)
+  fd.append('cityTwo',cityTwo.value)
+  fd.append('stateTwo',stateTwo.value)
+  fd.append('zipTwo',zipCodeTwo.value)
+  fd.append('countryTwo',countryTwo.value)
+
   let json = await fd;
-            let url = "http://localhost:3000/";
-            let h = new Headers();
-            let req = new Request(url,{
-                header: h,
-                body : json,
-                method: 'POST'
-            })
-            fetch(req)
-            .then((res)=> res.json())
-            .then((data)=>{
-              if(data.msg === "email already exists"){
-               alert(`${data.msg}`)
-              }else{
-                alert("form submitted succesfully")
-              }
-            })
-.catch(console.warn)
+  let url = "http://localhost:3000/";
+  let h = new Headers();
+  let req = new Request(url,{
+    header: h,
+    body : json,
+    method: 'POST'
+  })
+  fetch(req)
+  .then((res)=> res.json())
+  .then((data)=>{
+    if(data.msg === "email already exists"){
+      alert(`${data.msg}`)
+    }else{
+      alert("form submitted succesfully")
+    }
+  })
+ .catch(console.warn)
+  }else{
+    console.log('wrong')
+  }
+ 
 }) 
 </script>
 </body>

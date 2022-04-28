@@ -17,8 +17,19 @@ app.post('/', upload.single('image'),(req,res)=>{
        city : req.body.city,
        zipCode : req.body.zipcode,
        state : req.body.state, 
-       country : req.body.country
+       country : req.body.country,
+       moreAddress : [{
+        
+            streetTwo: req.body.streetTwo,
+            cityTwo : req.body.city,
+            stateTwo : req.body.stateTwo,
+            zipCodeTwo : req.body.zipTwo,
+            countryTwo : req.body.countryTwo
+        
+       }]
+
    }
+   
    MongoClient.connect(url,function(err,db){
        if(err) throw err;
        var dbo = db.db('expressForm');
@@ -27,30 +38,30 @@ app.post('/', upload.single('image'),(req,res)=>{
            if(response[0]){
                const message = {
                    msg : "email already exists"
-               }
+                }
                res.send(message)
-           }else{
-            const message = {
-                msg : "data inserted successfully"
+            }else{
+                const message = {
+                    msg : "data inserted successfully"
+                }
+                res.send(message)
+                dbo.collection('address').insertOne(address,function(err,result){
+                    if(err) throw err;
+                    const userData = {
+                        firstName : req.body.firstname,
+                        lastName : req.body.lastname,
+                        email : req.body.email,
+                        age : req.body.age,
+                        gender : req.body.gender,
+                        image : req.file.path,
+                        addressId : result.insertedId 
+                    }
+                    dbo.collection('users').insertOne(userData,function(err,result){
+                        if(err) throw err;
+                    })
+                })
             }
-            res.send(message)
-            dbo.collection('address').insertOne(address,function(err,result){
-                if(err) throw err;
-                const userData = {
-                 firstName : req.body.firstname,
-                 lastName : req.body.lastname,
-                 email : req.body.email,
-                 age : req.body.age,
-                 gender : req.body.gender,
-                 image : req.file.path,
-                 addressId : result.insertedId 
-             }
-             dbo.collection('users').insertOne(userData,function(err,result){
-                 if(err) throw err;
-             })
-            })
-           }
-       })
+        })
    })
 })
 app.get('/countries',(req,res)=>{
